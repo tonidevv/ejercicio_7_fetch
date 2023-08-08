@@ -19,3 +19,23 @@ function showData(dataArray) {
 }
 
 // Escribe el código necesario para realizar el fetch al archivo con los datos y mostrar los estudiantes con la función showData
+async function getJsonData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error fetching data from ${url}: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Ha ocurrido un error: ${error.message}`);
+  }
+}
+async function imprimirEstudiantes(){
+  const estudiantes= await getJsonData(DATA_URL);
+  const students=estudiantes.students
+  students.forEach(estudiante => {
+    document.getElementById("container").innerHTML+=`<p> ${estudiante.name} ${estudiante.lastname}</p>`
+  });
+}
+imprimirEstudiantes();
